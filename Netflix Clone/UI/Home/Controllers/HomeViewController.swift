@@ -8,17 +8,17 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    var cellIdentiifier = "cell"
     
     private let homeFeedTable: UITableView = {
-        let table = UITableView()
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        let table = UITableView(frame: .zero, style: .grouped)
+        table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
         return table
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configHomeFeedTable()
+        headerConfiguration()
         view.addSubview(homeFeedTable)
         view.backgroundColor = .systemBackground
         
@@ -34,23 +34,39 @@ class HomeViewController: UIViewController {
         homeFeedTable.dataSource = self
     }
     
+    func headerConfiguration() {
+        let headerView = HeroHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
+        homeFeedTable.tableHeaderView = headerView
+    }
+    
 }
 
 extension HomeViewController: UITableViewDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        20
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        200
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        40
+    }
     
 }
 
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentiifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath)
         
-        cell.textLabel?.text = "Cell \(indexPath.row)"
+        cell.backgroundColor = .lightGray
         return cell
     }
-    
     
 }
