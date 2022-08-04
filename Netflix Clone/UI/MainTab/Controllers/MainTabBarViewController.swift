@@ -16,15 +16,17 @@ class MainTabBarViewController: UITabBarController {
     
     
     func configureTabBar() {
-        let homeVC = UINavigationController(rootViewController: HomeViewController())
+        let homeVC = HomeViewController()
+        homeVC.viewModel = homeViewModel(viewDelegate: homeVC)
+        let navControllerHome = UINavigationController(rootViewController: homeVC)
         let upcomingVC = UINavigationController(rootViewController: UpcommingViewController())
         let searchVC = UINavigationController(rootViewController: SearchViewController())
         let downloadVC = UINavigationController(rootViewController: DownloadViewController())
         
-        setViewControllers([homeVC, upcomingVC, searchVC, downloadVC], animated: true)
+        setViewControllers([navControllerHome, upcomingVC, searchVC, downloadVC], animated: true)
         
-        homeVC.tabBarItem.image = UIImage(systemName: "house")
-        homeVC.tabBarItem.title = "Home"
+        navControllerHome.tabBarItem.image = UIImage(systemName: "house")
+        navControllerHome.tabBarItem.title = "Home"
         
         upcomingVC.tabBarItem.image = UIImage(systemName: "play.circle")
         upcomingVC.tabBarItem.title = "Coming Soon"

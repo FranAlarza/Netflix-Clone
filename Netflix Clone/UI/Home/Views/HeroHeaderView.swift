@@ -8,15 +8,7 @@
 import UIKit
 
 class HeroHeaderView: UIView {
-    
-    private let heroImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "heroImage")
-        return imageView
-    }()
-    
+        
     private let playButton: UIButton = {
         let playButton = UIButton()
         playButton.setTitle("Play", for: .normal)
@@ -37,6 +29,14 @@ class HeroHeaderView: UIView {
         return downloadButton
     }()
     
+    private let heroImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "heroImage")
+        return imageView
+    }()
+    
     private func addGradient() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [
@@ -46,13 +46,13 @@ class HeroHeaderView: UIView {
         gradientLayer.frame = bounds
         layer.addSublayer(gradientLayer)
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(heroImageView)
+        addGradient()
         addSubview(playButton)
         addSubview(downloadButton)
-        addGradient()
         applyContaraints()
     }
     
@@ -64,6 +64,7 @@ class HeroHeaderView: UIView {
     required init(coder: NSCoder) {
         fatalError()
     }
+    
     
     private func applyContaraints() {
         let playButtonConstraints = [
@@ -81,5 +82,5 @@ class HeroHeaderView: UIView {
         NSLayoutConstraint.activate(playButtonConstraints)
         NSLayoutConstraint.activate(downloadButtonConstraints)
     }
-
+    
 }

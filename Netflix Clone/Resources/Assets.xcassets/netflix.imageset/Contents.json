@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "netflixLogo@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "https---specials-images.forbesimg.com-imageserve-61116cea2313e8bae55a536a--Dune--0x0.jpg?fit=scale.jpeg",
+      "filename" : "netflixLogo@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "netflixLogo@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
