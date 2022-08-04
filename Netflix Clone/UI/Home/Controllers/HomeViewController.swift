@@ -11,6 +11,16 @@ protocol HomeViewControllerProtocol: AnyObject {
     func updateViews()
 }
 
+/* ["Trending Movies", "Popular", "Trending Tv", "Upcoming Movies" ,"Top Rated"] */
+
+enum Sections: Int {
+    case TrendingMovies = 0
+    case Popular = 1
+    case TrendingTv = 2
+    case UpcomingMovies = 3
+    case TopRated = 4
+}
+
 class HomeViewController: UIViewController {
     
     var viewModel: homeViewModelProtocol?
@@ -29,6 +39,10 @@ class HomeViewController: UIViewController {
         view.addSubview(homeFeedTable)
         view.backgroundColor = .systemBackground
         viewModel?.onViewsLoaded()
+        ApiCaller.shared.getTrendingTv { dataTrendingTv, error in
+            print(dataTrendingTv)
+            print(error)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -113,8 +127,39 @@ extension HomeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
+            return UITableViewCell()
+        }
         
+        switch indexPath.section {
+        case Sections.TrendingMovies.rawValue:
+            ApiCaller.shared.getTrendingMovies { dataTrendingMovies, _ in
+                cell.configureMovies(with: dataTrendingMovies ?? [])
+            }
+            
+        case Sections.Popular.rawValue:
+            ApiCaller.shared.getPopularMovies { dataPopularMovies, _ in
+                cell.configureMovies(with: dataPopularMovies ?? [])
+            }
+            
+        case Sections.TrendingTv.rawValue:
+            ApiCaller.shared.getTrendingTv { dataTrendingTv, _ in
+                cell.configureMovies(with: dataTrendingTv ?? [])
+            }
+            
+        case Sections.UpcomingMovies.rawValue:
+            ApiCaller.shared.getUpcomingMovies { dataUpcomingMovies, _ in
+                cell.configureMovies(with: dataUpcomingMovies ?? [])
+            }
+            
+        case Sections.TopRated.rawValue:
+            ApiCaller.shared.getTopRated { dataTopRated, _ in
+                cell.configureMovies(with: dataTopRated ?? [])
+            }
+            
+        default:
+            return UITableViewCell()
+        }
         
         return cell
     }

@@ -10,6 +10,7 @@ import UIKit
 class CollectionViewTableViewCell: UITableViewCell {
 
     static let identifier = "CollectionViewTableViewCell"
+    private var movies: [Movie] = []
     
     private let collectionView: UICollectionView = {
         
@@ -43,6 +44,13 @@ class CollectionViewTableViewCell: UITableViewCell {
         collectionView.dataSource = self
     }
     
+    func configureMovies(with movies: [Movie]) {
+        self.movies = movies
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
+    }
+    
 }
 
 extension CollectionViewTableViewCell: UICollectionViewDelegate {
@@ -51,13 +59,19 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate {
 
 extension CollectionViewTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else {
             return UICollectionViewCell()
+            }
+        
+        guard let posterPath = movies[indexPath.row].poster_path else {
+            return UICollectionViewCell()
         }
+        
+        cell.configure(with: posterPath)
         
         cell.backgroundColor = .lightGray
         

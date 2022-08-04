@@ -27,7 +27,7 @@ class ApiCaller {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 completion([], .decodingError)
                 return
@@ -46,7 +46,7 @@ class ApiCaller {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
                 completion([], .decodingError)
                 return
@@ -60,12 +60,12 @@ class ApiCaller {
     
     func getTrendingTv(completion: @escaping ([Movie]?, APICallerErrors?) -> Void) {
         
-        guard let url = URL(string: "\(Constants.baseURL)3/tv/popular?api_key=\(Constants.API_KEY)") else {
+        guard let url = URL(string: "https://api.themoviedb.org/3/trending/tv/day?api_key=100c5ac8b69942aa2b4db4ac08283f68") else {
             completion([], .malformedURL)
             return
         }
         
-        let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else {
                 completion([], .decodingError)
                 return
