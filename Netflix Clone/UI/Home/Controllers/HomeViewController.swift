@@ -39,10 +39,6 @@ class HomeViewController: UIViewController {
         view.addSubview(homeFeedTable)
         view.backgroundColor = .systemBackground
         viewModel?.onViewsLoaded()
-        ApiCaller.shared.getTrendingTv { dataTrendingTv, error in
-            print(dataTrendingTv)
-            print(error)
-        }
     }
     
     override func viewDidLayoutSubviews() {
