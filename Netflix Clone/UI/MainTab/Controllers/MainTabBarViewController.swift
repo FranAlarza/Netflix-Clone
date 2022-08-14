@@ -24,10 +24,13 @@ class MainTabBarViewController: UITabBarController {
         upcomingVC.viewModel = UpcomingViewModel(delegate: upcomingVC)
         let navControllerUpcoming = UINavigationController(rootViewController: upcomingVC)
         
-        let searchVC = UINavigationController(rootViewController: SearchViewController())
+        let searchVC = SearchViewController()
+        searchVC.viewModel = SearchViewModel(delegate: searchVC)
+        let navControllerSearch = UINavigationController(rootViewController: searchVC)
+        
         let downloadVC = UINavigationController(rootViewController: DownloadViewController())
         
-        setViewControllers([navControllerHome, navControllerUpcoming, searchVC, downloadVC], animated: true)
+        setViewControllers([navControllerHome, navControllerUpcoming, navControllerSearch, downloadVC], animated: true)
         
         navControllerHome.tabBarItem.image = UIImage(systemName: "house")
         navControllerHome.tabBarItem.title = "Home"
@@ -35,8 +38,8 @@ class MainTabBarViewController: UITabBarController {
         navControllerUpcoming.tabBarItem.image = UIImage(systemName: "play.circle")
         navControllerUpcoming.tabBarItem.title = "Coming Soon"
         
-        searchVC.tabBarItem.image = UIImage(systemName: "magnifyingglass")
-        searchVC.tabBarItem.title = "Top Searches"
+        navControllerSearch.tabBarItem.image = UIImage(systemName: "magnifyingglass")
+        navControllerSearch.tabBarItem.title = "Top Searches"
         
         downloadVC.tabBarItem.image = UIImage(systemName: "arrow.down")
         downloadVC.tabBarItem.title = "Downloads"

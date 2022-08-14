@@ -17,6 +17,8 @@
 		268925CE289D624E0099B0FD /* UpcomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268925CD289D624E0099B0FD /* UpcomingTableViewCell.swift */; };
 		269644AF2897148C004787BC /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269644AE2897148C004787BC /* CollectionViewTableViewCell.swift */; };
 		269644B228973A43004787BC /* HeroHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269644B128973A43004787BC /* HeroHeaderView.swift */; };
+		2698401528A7085500A74327 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2698401428A7085500A74327 /* SearchResultViewController.swift */; };
+		2699C20C28A5AC1200EC6482 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2699C20B28A5AC1100EC6482 /* SearchViewModel.swift */; };
 		26F7131B2892F4B1000596A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7131A2892F4B1000596A1 /* AppDelegate.swift */; };
 		26F7131D2892F4B1000596A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7131C2892F4B1000596A1 /* SceneDelegate.swift */; };
 		26F7131F2892F4B1000596A1 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7131E2892F4B1000596A1 /* MainTabBarViewController.swift */; };
@@ -37,6 +39,8 @@
 		268925CD289D624E0099B0FD /* UpcomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingTableViewCell.swift; sourceTree = "<group>"; };
 		269644AE2897148C004787BC /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
 		269644B128973A43004787BC /* HeroHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroHeaderView.swift; sourceTree = "<group>"; };
+		2698401428A7085500A74327 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		2699C20B28A5AC1100EC6482 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		26F713172892F4B1000596A1 /* Netflix Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Netflix Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26F7131A2892F4B1000596A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26F7131C2892F4B1000596A1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +99,14 @@
 				269644AE2897148C004787BC /* CollectionViewTableViewCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		2698401328A7081A00A74327 /* SearchBar */ = {
+			isa = PBXGroup;
+			children = (
+				2698401428A7085500A74327 /* SearchResultViewController.swift */,
+			);
+			path = SearchBar;
 			sourceTree = "<group>";
 		};
 		26F7130E2892F4B1000596A1 = {
@@ -251,6 +263,7 @@
 		26F713402892FB2F000596A1 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				2698401328A7081A00A74327 /* SearchBar */,
 				26F713432892FB6B000596A1 /* Models */,
 				26F713422892FB64000596A1 /* Controllers */,
 				26F713412892FB5A000596A1 /* ViewControllers */,
@@ -261,6 +274,7 @@
 		26F713412892FB5A000596A1 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				2699C20B28A5AC1100EC6482 /* SearchViewModel.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -398,9 +412,11 @@
 				26F7131B2892F4B1000596A1 /* AppDelegate.swift in Sources */,
 				268925CE289D624E0099B0FD /* UpcomingTableViewCell.swift in Sources */,
 				269644B228973A43004787BC /* HeroHeaderView.swift in Sources */,
+				2699C20C28A5AC1200EC6482 /* SearchViewModel.swift in Sources */,
 				26F7134B2892FC78000596A1 /* DownloadViewController.swift in Sources */,
 				26F7133F2892FA21000596A1 /* UpcommingViewController.swift in Sources */,
 				2621E85C289810D600C15149 /* APICaller.swift in Sources */,
+				2698401528A7085500A74327 /* SearchResultViewController.swift in Sources */,
 				26F7131D2892F4B1000596A1 /* SceneDelegate.swift in Sources */,
 				2621E85F2898137C00C15149 /* MoviesModel.swift in Sources */,
 				26F713392892F806000596A1 /* HomeViewController.swift in Sources */,
