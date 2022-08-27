@@ -79,11 +79,18 @@ class UpcomingTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(descriptionLabelConstraints)
     }
     
-    func setData(for model: Movie) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.poster_path ?? "")") else { return }
+    func setData(for modelMovie: Movie) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(modelMovie.poster_path ?? "")") else { return }
         posterImageView.sd_setImage(with: url)
-        titleLabel.text = model.title ?? model.original_title
-        descriptionLabel.text = model.overview
+        titleLabel.text = modelMovie.title ?? modelMovie.original_title
+        descriptionLabel.text = modelMovie.overview
+    }
+    
+    func setData(for modelTitleItem: TitleItem) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(modelTitleItem.poster_path ?? "")") else { return }
+        posterImageView.sd_setImage(with: url)
+        titleLabel.text = modelTitleItem.title ?? modelTitleItem.original_title
+        descriptionLabel.text = modelTitleItem.overview
     }
     
 }

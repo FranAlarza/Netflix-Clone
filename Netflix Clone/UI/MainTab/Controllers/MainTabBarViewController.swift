@@ -28,9 +28,11 @@ class MainTabBarViewController: UITabBarController {
         searchVC.viewModel = SearchViewModel(delegate: searchVC)
         let navControllerSearch = UINavigationController(rootViewController: searchVC)
         
-        let downloadVC = UINavigationController(rootViewController: DownloadViewController())
+        let downloadVC = DownloadViewController()
+        downloadVC.viewModel = DownloadsViewModel(delegate: downloadVC)
+        let navControlerDownload = UINavigationController(rootViewController: downloadVC)
         
-        setViewControllers([navControllerHome, navControllerUpcoming, navControllerSearch, downloadVC], animated: true)
+        setViewControllers([navControllerHome, navControllerUpcoming, navControllerSearch, navControlerDownload], animated: true)
         
         navControllerHome.tabBarItem.image = UIImage(systemName: "house")
         navControllerHome.tabBarItem.title = "Home"
@@ -41,8 +43,8 @@ class MainTabBarViewController: UITabBarController {
         navControllerSearch.tabBarItem.image = UIImage(systemName: "magnifyingglass")
         navControllerSearch.tabBarItem.title = "Top Searches"
         
-        downloadVC.tabBarItem.image = UIImage(systemName: "arrow.down")
-        downloadVC.tabBarItem.title = "Downloads"
+        navControlerDownload.tabBarItem.image = UIImage(systemName: "arrow.down")
+        navControlerDownload.tabBarItem.title = "Downloads"
         
         tabBar.tintColor = .label
         

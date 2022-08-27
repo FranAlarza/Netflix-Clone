@@ -18,7 +18,7 @@ class TitlePreviewViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let title = UILabel()
-        title.font = .systemFont(ofSize: 22, weight: .bold)
+        title.font = .systemFont(ofSize: 20, weight: .semibold)
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = "Movie Title"
         return title
@@ -36,7 +36,7 @@ class TitlePreviewViewController: UIViewController {
     private let downloadButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .green
+        button.backgroundColor = .red
         button.setTitle("Download", for: .normal)
         button.layer.cornerRadius = 8
         return button
@@ -70,7 +70,8 @@ class TitlePreviewViewController: UIViewController {
         
         let titleLabelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12)
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 12)
         ]
         
         let overviewLabelContraints = [

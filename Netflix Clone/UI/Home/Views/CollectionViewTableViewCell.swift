@@ -57,7 +57,9 @@ class CollectionViewTableViewCell: UITableViewCell {
     }
     
     func downloadMovie(at indexpath: IndexPath) {
-        print("Downloading... \(movies[indexpath.row].title ?? "")")
+        DataPersistenceManager.shared.downloadTitleWith(model: movies[indexpath.row]) { result, _ in
+            NotificationCenter.default.post(name: NSNotification.Name("downloaded"), object: nil)
+        }
     }
 }
 
