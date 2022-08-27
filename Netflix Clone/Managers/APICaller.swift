@@ -10,6 +10,8 @@ import Foundation
 struct Constants {
     static let API_KEY = "100c5ac8b69942aa2b4db4ac08283f68"
     static let baseURL = "https://api.themoviedb.org/"
+    static let youtubeAPI_KEY = "AIzaSyCYyqsIH-QIHssASOwIWhKZk8B1F_YOFts"
+    static let youtubeBaseURL = "https://youtube.googleapis.com/youtube/v3/search?"
 }
 
 enum APICallerErrors: Error {
@@ -149,6 +151,24 @@ class ApiCaller {
         task.resume()
         
     }
+    
+    func searchTrailer(with query: String, completion: @escaping (TrailerResponseId?, APICallerErrors?) -> Void) {
+        guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        guard let url = URL(string: "\(Constants.youtubeBaseURL)q=\(query)&key=\(Constants.youtubeAPI_KEY)") else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil, .decodingError)
+                return
+            }
+
+            let trailerResponse = try? JSONDecoder().decode(YoutubeSearchResults.self, from: data)
+            completion(trailerResponse?.items[0], nil)
+        }
+        
+        task.resume()
+    }
+    
     
     
 }

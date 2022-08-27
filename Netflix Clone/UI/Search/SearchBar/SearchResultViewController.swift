@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol SearchResultViewControllerDelegate: AnyObject {
+    func searchResultViewControllerdidTap(with model: TitlePreviewModel)
+}
+
 class SearchResultViewController: UIViewController {
     
     var resultsMovies: [Movie] = []
+    
+    weak var delegate: SearchResultViewControllerDelegate?
     
     let collectionResults: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -55,6 +61,21 @@ extension SearchResultViewController: UICollectionViewDataSource {
         
         cell.configure(with: posterPath.poster_path ?? "")
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let results = resultsMovies[indexPath.row]
+        guard let resultsTitle = results.original_title ?? results.title else { return }
+        
+        
+        ApiCaller.shared.searchTrailer(with: resultsTitle) { [weak self] resultsResponse, _ in
+            guard let resultsResponse = resultsResponse else {
+                return
+            }
+            self?.delegate?.searchResultViewControllerdidTap(with: TitlePreviewModel(title: resultsTitle, overview: results.overview, youtubeView: resultsResponse))
+        }
     }
     
     

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class HeroHeaderView: UIView {
         
@@ -31,7 +32,7 @@ class HeroHeaderView: UIView {
     
     private let heroImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "heroImage")
         return imageView
@@ -81,6 +82,12 @@ class HeroHeaderView: UIView {
         
         NSLayoutConstraint.activate(playButtonConstraints)
         NSLayoutConstraint.activate(downloadButtonConstraints)
+    }
+    
+    func configure(with posterPath: String) {
+        
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(posterPath)") else { return }
+        heroImageView.sd_setImage(with: url)
     }
     
 }

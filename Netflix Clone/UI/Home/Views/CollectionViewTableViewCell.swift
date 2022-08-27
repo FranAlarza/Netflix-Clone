@@ -7,10 +7,15 @@
 
 import UIKit
 
-class CollectionViewTableViewCell: UITableViewCell {
+protocol CollectionViewTableViewCellDelegate: AnyObject {
+    func collectionViewTableViewCellDidTap(with cell: CollectionViewTableViewCell, model: TitlePreviewModel)
+}
 
+class CollectionViewTableViewCell: UITableViewCell {
+    
     static let identifier = "CollectionViewTableViewCell"
     private var movies: [Movie] = []
+    weak var delegate: CollectionViewTableViewCellDelegate?
     
     private let collectionView: UICollectionView = {
         
@@ -51,6 +56,9 @@ class CollectionViewTableViewCell: UITableViewCell {
         }
     }
     
+    func downloadMovie(at indexpath: IndexPath) {
+        print("Downloading... \(movies[indexpath.row].title ?? "")")
+    }
 }
 
 extension CollectionViewTableViewCell: UICollectionViewDelegate {
@@ -73,11 +81,34 @@ extension CollectionViewTableViewCell: UICollectionViewDataSource {
         
         cell.configure(with: posterPath)
         
-        cell.backgroundColor = .lightGray
-        
-        
         return cell
     
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let titleName = movies[indexPath.row].original_title ?? movies[indexPath.row].title else { return }
+        let titleOverview = movies[indexPath.row].overview
+
+        ApiCaller.shared.searchTrailer(with: "\(titleName) trailer") { [weak self] response, error in
+            guard let response = response else { return }
+            let model = TitlePreviewModel(title: titleName,
+                                          overview: titleOverview, youtubeView: response)
+
+            self?.delegate?.collectionViewTableViewCellDidTap(with: self ?? CollectionViewTableViewCell(), model: model)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(identifier: nil,
+                                                previewProvider: nil) { _ in
+            let downloadAction = UIAction(title: "Download", subtitle: nil, image: nil, identifier: nil, discoverabilityTitle: nil, state: .off) { [weak self] _ in
+                self?.downloadMovie(at: indexPath)
+            }
+            return UIMenu(title: "", subtitle: nil, image: nil, identifier: nil, options: .displayInline, children: [downloadAction])
+        }
+        return config
+    }
+    
 }
+

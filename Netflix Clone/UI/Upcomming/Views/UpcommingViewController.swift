@@ -9,6 +9,7 @@ import UIKit
 
 protocol UpcomingViewProtocol: AnyObject {
     func updateViews()
+    func navigateToNextView(to controller: TitlePreviewViewController)
 }
 
 class UpcommingViewController: UIViewController {
@@ -46,6 +47,10 @@ class UpcommingViewController: UIViewController {
 }
 
 extension UpcommingViewController: UpcomingViewProtocol {
+    func navigateToNextView(to controller: TitlePreviewViewController) {
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     func updateViews() {
         DispatchQueue.main.async {
             self.upcomingTable.reloadData()
@@ -77,6 +82,11 @@ extension UpcommingViewController: UITableViewDataSource {
         cell.setData(for: upcomingData)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        viewModel?.setUpcomingData(for: indexPath.row)
     }
     
     

@@ -9,6 +9,7 @@ import UIKit
 
 protocol SearchViewProtocol {
     func reloadData()
+    func navigateToNextScreen(with nextScreen: TitlePreviewViewController)
 }
 
 class SearchViewController: UIViewController {
@@ -63,6 +64,10 @@ extension SearchViewController: SearchViewProtocol {
             self?.discoverTable.reloadData()
         }
     }
+    
+    func navigateToNextScreen(with nextScreen: TitlePreviewViewController) {
+        navigationController?.pushViewController(nextScreen, animated: true)
+    }
 }
 
 extension SearchViewController: UITableViewDelegate {
@@ -86,10 +91,14 @@ extension SearchViewController: UITableViewDataSource {
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel?.setDataForDetail(for: indexPath.row)
+    }
 }
 
-extension SearchViewController: UISearchResultsUpdating {
+extension SearchViewController: UISearchResultsUpdating, SearchResultViewControllerDelegate {
+    
+    
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         guard let query = searchBar.text,
@@ -97,14 +106,22 @@ extension SearchViewController: UISearchResultsUpdating {
               query.trimmingCharacters(in: .whitespaces).count >= 3,
               let resultController = searchController.searchResultsController as? SearchResultViewController else { return }
         
+        resultController.delegate = self
+        
         ApiCaller.shared.searchMovies(with: query) { results, _ in
             resultController.resultsMovies = results ?? []
             DispatchQueue.main.async {
                 resultController.collectionResults.reloadData()
             }
         }
-                
-                
+    }
+    
+    func searchResultViewControllerdidTap(with model: TitlePreviewModel) {
+        DispatchQueue.main.async { [weak self] in
+            let nextVC = TitlePreviewViewController()
+            nextVC.configure(with: model)
+            self?.navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
 }
 

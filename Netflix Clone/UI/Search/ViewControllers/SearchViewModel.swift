@@ -11,6 +11,7 @@ protocol SearchViewModelProtocol{
     func onViewsLoaded()
     func getDiscoverMovies(for index: Int) -> Movie
     var discoverMoviesCount: Int { get }
+    func setDataForDetail(for index: Int)
 }
 
 class SearchViewModel {
@@ -40,5 +41,21 @@ extension SearchViewModel: SearchViewModelProtocol {
     
     func getDiscoverMovies(for index: Int) -> Movie {
         return discoverMovies[index]
+    }
+    
+    func setDataForDetail(for index: Int) {
+        let discover = discoverMovies[index]
+        guard let discoverTitle = discoverMovies[index].title ?? discoverMovies[index].original_title else { return }
+        
+        ApiCaller.shared.searchTrailer(with: discoverTitle) { [weak self] result, _ in
+            guard let result = result else {
+                return
+            }
+            DispatchQueue.main.async {
+                let vc = TitlePreviewViewController()
+                vc.configure(with: TitlePreviewModel(title: discoverTitle, overview: discover.overview, youtubeView: result))
+                self?.delegate?.navigateToNextScreen(with: vc)
+            }
+        }
     }
 }

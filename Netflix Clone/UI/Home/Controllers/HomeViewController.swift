@@ -11,8 +11,6 @@ protocol HomeViewControllerProtocol: AnyObject {
     func updateViews()
 }
 
-/* ["Trending Movies", "Popular", "Trending Tv", "Upcoming Movies" ,"Top Rated"] */
-
 enum Sections: Int {
     case TrendingMovies = 0
     case Popular = 1
@@ -24,6 +22,8 @@ enum Sections: Int {
 class HomeViewController: UIViewController {
     
     var viewModel: homeViewModelProtocol?
+    private var heroTitle: Movie?
+    private var heroHeader: HeroHeaderView?
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -34,7 +34,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configHomeFeedTable()
-        headerConfiguration()
+        getHeroTitle()
         configureNavBar()
         view.addSubview(homeFeedTable)
         view.backgroundColor = .systemBackground
@@ -49,11 +49,16 @@ class HomeViewController: UIViewController {
     func configHomeFeedTable() {
         homeFeedTable.delegate = self
         homeFeedTable.dataSource = self
+        heroHeader = HeroHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
+        homeFeedTable.tableHeaderView = heroHeader
     }
     
-    func headerConfiguration() {
-        let headerView = HeroHeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
-        homeFeedTable.tableHeaderView = headerView
+    func getHeroTitle() {
+        ApiCaller.shared.getTrendingMovies { movies, error in
+            let selectedTitle = movies?.randomElement()
+            self.heroTitle = movies?.randomElement()
+            self.heroHeader?.configure(with: selectedTitle?.poster_path ?? "")
+        }
     }
     
     private func configureNavBar() {
@@ -127,21 +132,17 @@ extension HomeViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        cell.delegate = self
+        
         switch indexPath.section {
         case Sections.TrendingMovies.rawValue:
-            ApiCaller.shared.getTrendingMovies { dataTrendingMovies, _ in
-                cell.configureMovies(with: dataTrendingMovies ?? [])
-            }
+            viewModel?.getTrendigMovies(with: cell)
             
         case Sections.Popular.rawValue:
-            ApiCaller.shared.getPopularMovies { dataPopularMovies, _ in
-                cell.configureMovies(with: dataPopularMovies ?? [])
-            }
+            viewModel?.getPopularMovies(with: cell)
             
         case Sections.TrendingTv.rawValue:
-            ApiCaller.shared.getTrendingTv { dataTrendingTv, _ in
-                cell.configureMovies(with: dataTrendingTv ?? [])
-            }
+            viewModel?.getTrendingTvShows(with: cell)
             
         case Sections.UpcomingMovies.rawValue:
             ApiCaller.shared.getUpcomingMovies { dataUpcomingMovies, _ in
@@ -168,4 +169,16 @@ extension HomeViewController: HomeViewControllerProtocol {
             self?.homeFeedTable.reloadData()
         }
     }
+}
+
+extension HomeViewController: CollectionViewTableViewCellDelegate {
+    func collectionViewTableViewCellDidTap(with cell: CollectionViewTableViewCell, model: TitlePreviewModel) {
+        DispatchQueue.main.async { [weak self] in
+            let nextVC = TitlePreviewViewController()
+            nextVC.configure(with: model)
+            self?.navigationController?.pushViewController(nextVC, animated: true)
+        }
+    }
+    
+    
 }
